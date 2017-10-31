@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+
 /**
  * Class that implements a Pokemon colosseum.
  * <p>
@@ -37,6 +38,21 @@ public class Colosseum {
      * Useful functions: next(), nextInt() .
      */
     static Scanner myScan;
+
+    /**
+     * number 1.
+     */
+    static final int ONE = 1;
+
+    /**
+     * number 2.
+     */
+    static final int TWO = 2;
+
+    /**
+     * number 3.
+     */
+    static final int THREE = 3;
 
     /**
      * We are now reimplementing this to meet our new Pokemon specifications. <br>
@@ -103,8 +119,74 @@ public class Colosseum {
      *         <p>
      */
     public static Pokemon buildPokemon() {
-        Pokemon returnPokemon = null;
-        return returnPokemon;
+        Pokemon tempPokemon;
+        // --- Ask the user to choose the type of Pokemon ----
+        int tempPokeType = 0;
+        boolean firstAsk = true;
+        do {
+            if (!firstAsk) {
+                System.out.println("Sorry, you must pick either 1, 2, or 3.");
+            }
+            System.out.println("Select from the following Pokemon types:");
+            System.out.println("1 - Electric Pokemon ");
+            System.out.println("2 - Fire Pokemon ");
+            System.out.println("3 - Water Pokemon ");
+            tempPokeType = myScan.nextInt();
+            firstAsk = false;
+        } while (tempPokeType < ONE || tempPokeType > THREE);
+
+        if (tempPokeType == ONE) {
+            tempPokemon = new ElectricPokemon();
+        } else if (tempPokeType == TWO) {
+            tempPokemon = new FirePokemon();
+        } else {
+            tempPokemon = new WaterPokemon();
+        }
+
+
+
+        // Ask the user for pokemon name
+        System.out.print("Please name your Pokemon: ");
+        myScan = new Scanner(System.in);
+        tempPokemon.setName(myScan.nextLine());
+
+        // Ask the user for hit point
+        System.out.print("How many hit points will it have? (1-50): ");
+        int tempHitPoint = myScan.nextInt();
+
+        // If the hit point user entered is illegal, keep asking for a legal one
+        while (tempHitPoint < 1 || tempHitPoint > MAX_HIT_POINTS) {
+            System.out.print("Sorry. Hit points must be between 1 and 50: ");
+            tempHitPoint = myScan.nextInt();
+        }
+        tempPokemon.setHitPoints(tempHitPoint);
+
+        // Ask the user for attack level
+        System.out.println("Split fifty points between attack level and defense level");
+        System.out.print("Enter your attack level (1-49): ");
+        int tempAttack = myScan.nextInt();
+
+        // If the attack level is illegal, keep asking until get a legal one
+        while (tempAttack < 1 || tempAttack > MAX_HIT_POINTS - 1) {
+            System.out.print("Sorry. The attack level must be between 1 and 49: ");
+            tempAttack = myScan.nextInt();
+        }
+        tempPokemon.setAttackLevel(tempAttack);
+
+        // Ask the user for defense level
+        final int maxDefense = MAX_HIT_POINTS - tempPokemon.getAttackLevel();
+        System.out.printf("Enter your defense level (1-%d): ", maxDefense);
+        int tempDefense = myScan.nextInt();
+
+        // If the defense level is illegal, keep asking until get a legal one
+        while (tempDefense < 1 || tempDefense > maxDefense) {
+            System.out.printf("Sorry. The defense level must be between 1 and %d: ", maxDefense);
+            tempDefense = myScan.nextInt();
+        }
+        tempPokemon.setDefenseLevel(tempDefense);
+
+
+        return tempPokemon;
     }
 
     /**
